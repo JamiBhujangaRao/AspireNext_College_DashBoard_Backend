@@ -39,7 +39,7 @@ app.post("/colleges", async (request, response) => {
   const { collegeName, location, course, fee, isFavorite } = collegeDetails
   const addCollegeQuery = `
     INSERT INTO 
-    college (college_name, location, course, fee, is_favorite)
+    college (collage_name, location, course, fee, is_favorite)
     VALUES 
     ('${collegeName}', '${location}', '${course}', ${fee}, ${isFavorite});`
   const dbResponse = await db.run(addCollegeQuery)
@@ -61,7 +61,7 @@ app.put("/colleges/:collegeId", async (request, response) => {
   const { collegeName, location, course, fee, isFavorite } = collegeDetails
   const updateCollegeQuery = `
     UPDATE college
-    SET college_name = '${collegeName}', 
+    SET collage_name = '${collegeName}', 
     location = '${location}',
      course = '${course}',
      fee = ${fee}, 
@@ -118,7 +118,7 @@ app.get('/colleges', async (req, res) => {
     const params = [];
 
     if (req.query.searchQuery) {
-      query += ' AND college_name LIKE ?';
+      query += ' AND collage_name LIKE ?';
       params.push(`%${req.query.searchQuery}%`);
     }
 
