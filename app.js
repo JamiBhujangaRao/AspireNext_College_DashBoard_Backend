@@ -42,12 +42,12 @@ initializeDBAndServer()
 
 app.post("/colleges", async (request, response) => {
   const collegeDetails = request.body
-  const { collegeName, location, course, fee, isFavorite } = collegeDetails
+  const { cid,collegeName, location, course, fee, isFavorite } = collegeDetails
   const addCollegeQuery = `
     INSERT INTO 
-    college (college_name, location, course, fee, is_favorite)
+    college (cid,college_name, location, course, fee, is_favorite)
     VALUES 
-    ('${collegeName}', '${location}', '${course}', ${fee}, ${isFavorite});`
+    ('${cid}','${collegeName}', '${location}', '${course}', ${fee}, ${isFavorite});`
   const dbResponse = await db.run(addCollegeQuery)
   const collegeId = dbResponse.lastID
   response.send({ collegeId: collegeId })
