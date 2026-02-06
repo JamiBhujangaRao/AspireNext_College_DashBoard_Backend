@@ -45,7 +45,7 @@ app.post("/colleges", async (request, response) => {
   const { collegeName, location, course, fee, isFavorite } = collegeDetails
   const addCollegeQuery = `
     INSERT INTO 
-    college (collage_name, location, course, fee, is_favorite)
+    college (college_name, location, course, fee, is_favorite)
     VALUES 
     ('${collegeName}', '${location}', '${course}', ${fee}, ${isFavorite});`
   const dbResponse = await db.run(addCollegeQuery)
@@ -56,7 +56,7 @@ app.post("/colleges", async (request, response) => {
 
 app.get("/colleges/:collegeId", async (request, response) => {
   const { collegeId } = request.params
-  const getCollegeQuery = `SELECT * FROM college WHERE college_id = ${collegeId};`
+  const getCollegeQuery = `SELECT * FROM college WHERE cid = ${collegeId};`
   const college = await db.get(getCollegeQuery)
   response.send(college)
 })
@@ -67,12 +67,12 @@ app.put("/colleges/:collegeId", async (request, response) => {
   const { collegeName, location, course, fee, isFavorite } = collegeDetails
   const updateCollegeQuery = `
     UPDATE college
-    SET collage_name = '${collegeName}', 
+    SET college_name = '${collegeName}', 
     location = '${location}',
      course = '${course}',
      fee = ${fee}, 
      is_favorite = ${isFavorite}
-    WHERE college_id = ${collegeId};`
+    WHERE cid = ${collegeId};`
 
   await db.run(updateCollegeQuery)
   response.send("College Details Updated")
@@ -93,7 +93,7 @@ app.get("/reviews", async (req, res) => {
 
 app.delete("/colleges/:collegeId", async (request, response) => {
   const { collegeId } = request.params
-  const deleteCollegeQuery = `DELETE FROM college WHERE college_id = ${collegeId};`
+  const deleteCollegeQuery = `DELETE FROM college WHERE cid = ${collegeId};`
   await db.run(deleteCollegeQuery)
   response.send("College Removed")
 })
@@ -106,14 +106,14 @@ app.get("/favorites", async (request, response) => {
 
 app.put("/favorites/:collegeId", async (request, response) => {
   const { collegeId } = request.params
-  const updateFavoriteQuery = `UPDATE college SET is_favorite = 1 WHERE college_id = ${collegeId};`
+  const updateFavoriteQuery = `UPDATE college SET is_favorite = 1 WHERE cid = ${collegeId};`
   await db.run(updateFavoriteQuery)
   response.send("College Marked as Favorite")
 })
 
 app.delete("/favorites/:collegeId", async (request, response) => {
   const { collegeId } = request.params
-  const deleteFavoriteQuery = `UPDATE college SET is_favorite = 0 WHERE college_id = ${collegeId};`
+  const deleteFavoriteQuery = `UPDATE college SET is_favorite = 0 WHERE cid = ${collegeId};`
   await db.run(deleteFavoriteQuery)
   response.send("College Unmarked as Favorite")
 })
@@ -124,7 +124,7 @@ app.get('/colleges', async (req, res) => {
     const params = [];
 
     if (req.query.searchQuery) {
-      query += ' AND collage_name LIKE ?';
+      query += ' AND college_name LIKE ?';
       params.push(`%${req.query.searchQuery}%`);
     }
 
