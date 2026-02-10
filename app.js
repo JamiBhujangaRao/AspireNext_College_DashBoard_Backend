@@ -77,6 +77,24 @@ app.put("/colleges/:collegeId", async (request, response) => {
   response.send("College Details Updated")
 })
 
+app.patch("/colleges/:collegeId", async (request, response) =>{
+  try{
+    
+  const { collegeId } = request.params
+  const collegeDetails = request.body
+  const {isFavorite} = collegeDetails
+  const updateQuery = `UPDATE college  SET is_favorite = ? WHERE cid = ?;`
+  const result = await db.run(updateQuery, [isFavorite,collegeId])
+    if (result.changes === 0) {
+      return response.status(404).json({ message: "College not found" });
+    }
+    response.json({ message: "College Details Updated" });
+    }catch(error){
+   response.status(500).json({ error: error.message });
+}
+});
+
+
 
 app.get("/reviews", async (req, res) => {
   try {
